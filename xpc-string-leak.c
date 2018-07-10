@@ -2,6 +2,8 @@
  * xpc-string-leak
  * Brandon Azad
  *
+ * CVE-2018-4248
+ *
  *
  * xpc-string-leak is a proof-of-concept exploit for an out-of-bounds memory read in libxpc. This
  * exploit uses the vulnerability to read out-of-bounds heap memory from diagnosticd, an
@@ -92,7 +94,7 @@
  * 	    _xpc_serializer_append(serializer, string->string, string->length + 1, 1, 0, 0);
  * 	}
  *
- * The OS_xpc_string's length parameter is trusted during deserialization, meaning that many bytes
+ * The OS_xpc_string's length parameter is trusted during serialization, meaning that many bytes
  * are read from the heap into the serialized message. If the deserialized string was shorter than
  * its reported length, the message will be filled with out-of-bounds heap data.
  *

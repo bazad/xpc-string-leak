@@ -9,7 +9,7 @@ exploit uses the vulnerability to read out-of-bounds heap memory from diagnostic
 root process with the `task_for_pid-allow` entitlement.
 
 
-The vulnerability
+The vulnerability: CVE-2018-4248
 ---------------------------------------------------------------------------------------------------
 
 On macOS 10.13.5 and iOS 11.4, the function `_xpc_string_deserialize` does not verify that the
@@ -99,7 +99,7 @@ void __fastcall _xpc_string_serialize(OS_xpc_string *string, OS_xpc_serializer *
 }
 ```
 
-The `OS_xpc_string`'s `length` parameter is trusted during deserialization, meaning that many bytes
+The `OS_xpc_string`'s `length` parameter is trusted during serialization, meaning that many bytes
 are read from the heap into the serialized message. If the deserialized string was shorter than its
 reported length, the message will be filled with out-of-bounds heap data.
 
@@ -134,6 +134,17 @@ License
 
 The xpc-string-leak code is released into the public domain. As a courtesy I ask that if you
 reference or use any of this code you attribute it to me.
+
+
+Timeline
+---------------------------------------------------------------------------------------------------
+
+I discovered this bug early in 2018 (January or February), but forgot to investigate it until
+May. I reported the issue to Apple on May 9, and it was assigned CVE-2018-4248 and patched in [iOS
+11.4.1] and [macOS 10.13.6] on July 9.
+
+[iOS 11.4.1]: https://support.apple.com/en-us/HT208938
+[macOS 10.13.6]: https://support.apple.com/en-us/HT208937
 
 
 ---------------------------------------------------------------------------------------------------
